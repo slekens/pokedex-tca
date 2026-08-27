@@ -48,15 +48,14 @@ struct PokemonListView: View {
     private func loadedList(_ pokemons: [Pokemon]) -> some View {
         List {
             ForEach(pokemons) { pokemon in
-                Button {
+                PokemonRow(
+                    pokemon: pokemon,
+                    isFavorite: store.favorites.contains(pokemon.id)
+                )
+                .contentShape(Rectangle())
+                .onTapGesture {
                     store.send(.rowTapped(pokemon))
-                } label: {
-                    PokemonRow(
-                        pokemon: pokemon,
-                        isFavorite: store.favorites.contains(pokemon.id)
-                    )
                 }
-                .buttonStyle(.plain)
                 .onAppear {
                     if pokemon.id == pokemons.last?.id {
                         store.send(.reachedEnd)
